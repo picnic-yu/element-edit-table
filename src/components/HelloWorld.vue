@@ -1,58 +1,67 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+	<v-table-extends :data="tableData3"  ref="multipleTable">
+		<el-table-column type="selection" width="55" ></el-table-column>
+		<el-table-column type="index" label="序号" width="60"></el-table-column>
+		<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></el-table-column>
+		<el-table-column prop="date" label="日期"></el-table-column>
+		<el-table-column prop="name" label="姓名"></el-table-column>
+		 <el-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></el-table-column>
+		<el-table-column prop="address" label="地址"></el-table-column>
+	</v-table-extends>
 </template>
-
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+export default {   
+	data() {
+		return {
+      tableData3: [{
+        id:'1',
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄',
+        IsAudit:0,
+        sex:'1'
+      }, {
+        id:'2',
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄',
+        IsAudit:1,
+        sex:'0'
+      }, {
+        id:'3',
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄',
+        IsAudit:10,
+        sex:'-1'
+      }]
+    }
+	},
+	mounted() {
+	},
+	methods: {
+		formatSex: function (row, column, cellValue, index) {
+			return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
+		},
+		//状态改成汉字
+    formatterColumn(row, column) {
+      switch(row.IsAudit){
+        case 0:
+          return '未通过'
+          break
+        case 1:
+          return '审核通过'
+          break
+        case 10:
+          return '待审核'
+          break
+        case 9:
+          return '草稿'
+          break
+        default:
+          return '未知'
+      }
+    }
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
