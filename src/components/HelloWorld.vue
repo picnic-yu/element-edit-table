@@ -1,5 +1,6 @@
 <template>
-	<v-table-extends :data="tableData3"  ref="multipleTable">
+<div>
+  <v-table-extends :data="tableData3" table-ref='multipleTable1' @handleDeleteRow='handleDeleteRow' @handleEditRow='handleEditRow' @handleCreate='handleCreate'   ref="multipleTable" highlight-current-row>
 		<el-table-column type="selection" width="55" ></el-table-column>
 		<el-table-column type="index" label="序号" width="60"></el-table-column>
 		<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></el-table-column>
@@ -8,6 +9,17 @@
 		 <el-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></el-table-column>
 		<el-table-column prop="address" label="地址"></el-table-column>
 	</v-table-extends>
+  <v-table-extends :data="tableData3" table-ref='multipleTable2' ref="multipleTable" highlight-current-row>
+		<el-table-column type="selection" width="55" ></el-table-column>
+		<el-table-column type="index" label="序号" width="60"></el-table-column>
+		<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></el-table-column>
+		<el-table-column prop="date" label="日期"></el-table-column>
+		<el-table-column prop="name" label="姓名"></el-table-column>
+		 <el-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></el-table-column>
+		<el-table-column prop="address" label="地址"></el-table-column>
+	</v-table-extends>
+</div>
+	
 </template>
 <script>
 export default {   
@@ -42,7 +54,16 @@ export default {
 	methods: {
 		formatSex: function (row, column, cellValue, index) {
 			return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
-		},
+    },
+    handleCreate(){
+      console.log(22222222)
+    },
+    handleEditRow(row){
+      console.log(row,'row')
+    },
+    handleDeleteRow(row){
+      console.log(row)
+    },
 		//状态改成汉字
     formatterColumn(row, column) {
       switch(row.IsAudit){
