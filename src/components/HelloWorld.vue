@@ -1,22 +1,22 @@
 <template>
 <div>
   <v-table-extends :data="tableData3" table-ref='multipleTable1' @handleDeleteRow='handleDeleteRow' @handleEditRow='handleEditRow' @handleCreate='handleCreate'   ref="multipleTable" highlight-current-row>
-		<el-table-column type="selection" width="55" ></el-table-column>
-		<el-table-column type="index" label="序号" width="60"></el-table-column>
-		<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></el-table-column>
-		<el-table-column prop="date" label="日期"></el-table-column>
-		<el-table-column prop="name" label="姓名"></el-table-column>
-		 <el-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></el-table-column>
-		<el-table-column prop="address" label="地址"></el-table-column>
+		<v-table-column type="selection" width="55" ></v-table-column>
+		<v-table-column type="index" label="序号" width="60"></v-table-column>
+		<v-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></v-table-column>
+		<v-table-column prop="date" label="日期"></v-table-column>
+		<v-table-column prop="name" label="姓名"></v-table-column>
+		 <v-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></v-table-column>
+		<v-table-column prop="address" label="地址"></v-table-column>
 	</v-table-extends>
   <v-table-extends :data="tableData3" table-ref='multipleTable2' ref="multipleTable" highlight-current-row>
-		<el-table-column type="selection" width="55" ></el-table-column>
-		<el-table-column type="index" label="序号" width="60"></el-table-column>
-		<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></el-table-column>
-		<el-table-column prop="date" label="日期"></el-table-column>
-		<el-table-column prop="name" label="姓名"></el-table-column>
-		 <el-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></el-table-column>
-		<el-table-column prop="address" label="地址"></el-table-column>
+		<v-table-column type="selection" width="55" ></v-table-column>
+		<v-table-column type="index" label="序号" width="60"></v-table-column>
+		<v-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></v-table-column>
+		<v-table-column prop="date" label="日期"></v-table-column>
+		<v-table-column prop="name" label="姓名"></v-table-column>
+		 <v-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></v-table-column>
+		<v-table-column prop="address" label="地址"></v-table-column>
 	</v-table-extends>
 </div>
 	

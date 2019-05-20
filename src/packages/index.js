@@ -1,11 +1,13 @@
 
 
 import extendsTable from './components/edit-table/index';
+import tableColumn from './components/edit-table/table-column.js'
 
 // 存储组件列表
 const components = [
     
     extendsTable,
+    tableColumn
 
 ]
 const install = function (Vue) {
