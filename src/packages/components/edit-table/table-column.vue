@@ -27,6 +27,18 @@
         :filterMethod='filterMethod'
         :filteredValue='filteredValue'
     >
+        
+        <template v-slot="scope" v-if='type !=="index" && type!=="selection"' >
+            <div v-if='scope.row.isEdit && type !=="index" && type!=="selection"'>
+              
+                <el-input   v-model='scope.row[scope.column.property]' />
+                <slot v-bind='getScope(scope)'></slot>
+            </div>
+            <div v-else>
+              
+                {{scope.row[scope.column.property]}}
+            </div>
+        </template>
     </el-table-column>
 </template>
 <script>
@@ -35,14 +47,28 @@ export default {
     name:'v-table-column',
     data(){
         return {
-
+            test:''
         }
     },
     props: {
         ...PropsStatic.tableColumn
     },
     methods:{
-
+        handleTestClick(scope){
+            console.log(scope)
+        },
+        getScope (scope) {
+            console.log(scope)
+            return {
+                row: scope.row,
+                column: scope.column,
+                store: scope.store,
+                $index: scope.$index,
+                $render: this.renderOpts,
+                _self: scope._self,
+                _row: scope.row
+            }
+        },
     }
 }
 </script>

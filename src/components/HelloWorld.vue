@@ -1,6 +1,15 @@
 <template>
 <div>
-  <v-table-extends :data="tableData3" table-ref='multipleTable1' @handleDeleteRow='handleDeleteRow' @handleEditRow='handleEditRow' @handleCreate='handleCreate'   ref="multipleTable" highlight-current-row>
+  <v-table-extends :data="tableData3" table-ref='multipleTable1' @keywordDown='keywordDown' @handleDeleteRow='handleDeleteRow' @handleEditRow='handleEditRow' @handleCreate='handleCreate'   ref="multipleTable" highlight-current-row>
+		<v-table-column type="selection" width="55" ></v-table-column>
+		<v-table-column type="index" label="序号" width="60"></v-table-column>
+		<v-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></v-table-column>
+		<v-table-column prop="date" label="日期"></v-table-column>
+		<v-table-column prop="name" label="姓名"></v-table-column>
+		<v-table-column prop="IsAudit" :isEdit= 'checkoutStatue'  :formatter="formatterColumn" label="审核状态" ></v-table-column>
+		<v-table-column prop="address" label="地址"></v-table-column>
+	</v-table-extends>
+  <!-- <v-table-extends :data="tableData3" table-ref='multipleTable2' ref="multipleTable" highlight-current-row>
 		<v-table-column type="selection" width="55" ></v-table-column>
 		<v-table-column type="index" label="序号" width="60"></v-table-column>
 		<v-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></v-table-column>
@@ -8,16 +17,8 @@
 		<v-table-column prop="name" label="姓名"></v-table-column>
 		 <v-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></v-table-column>
 		<v-table-column prop="address" label="地址"></v-table-column>
-	</v-table-extends>
-  <v-table-extends :data="tableData3" table-ref='multipleTable2' ref="multipleTable" highlight-current-row>
-		<v-table-column type="selection" width="55" ></v-table-column>
-		<v-table-column type="index" label="序号" width="60"></v-table-column>
-		<v-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></v-table-column>
-		<v-table-column prop="date" label="日期"></v-table-column>
-		<v-table-column prop="name" label="姓名"></v-table-column>
-		 <v-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></v-table-column>
-		<v-table-column prop="address" label="地址"></v-table-column>
-	</v-table-extends>
+	</v-table-extends> -->
+  <el-input v-model="input" placeholder="请输入内容"></el-input>
 </div>
 	
 </template>
@@ -25,22 +26,27 @@
 export default {   
 	data() {
 		return {
+      checkoutStatue:true,
+      input:'',
       tableData3: [{
         id:'1',
         date: '2016-05-03',
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄',
         IsAudit:0,
-        sex:'1'
+        sex:'1',
+        isEdit:false,
       }, {
         id:'2',
         date: '2016-05-02',
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄',
         IsAudit:1,
+        isEdit:false,
         sex:'0'
       }, {
         id:'3',
+        isEdit:true,
         date: '2016-05-02',
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄',
@@ -55,11 +61,16 @@ export default {
 		formatSex: function (row, column, cellValue, index) {
 			return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
     },
+
+    keywordDown(index,row){
+      console.log(index,row)
+    },
     handleCreate(){
       console.log(22222222)
     },
     handleEditRow(row){
       console.log(row,'row')
+      console.log(this.tableData3)
     },
     handleDeleteRow(row){
       console.log(row)

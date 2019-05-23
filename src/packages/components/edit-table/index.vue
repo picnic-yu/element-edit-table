@@ -58,7 +58,7 @@ export default {
     },
     data(){
         return {
-            activeIndex:-1,
+            activeIndex:0,
             clickRowItem:{},
             isClickRow:false
         }
@@ -193,9 +193,11 @@ export default {
             this.$emit('expand-change', row, expandedRows);
         },
         down() {
+            this.$emit('keywordDown',this.activeIndex,this.data[this.activeIndex]);
             this.activeIndex < this.len
                 ? this.activeIndex++
                 : (this.activeIndex = 0)
+            
             this.setCurrentRow()
         },
         up() {

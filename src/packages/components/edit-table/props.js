@@ -57,7 +57,8 @@ const PropsStatic = {
       filterPlacement: String,//过滤弹出框的定位
       filterMultiple: { type: Boolean, default: true },//数据过滤的选项是否多选
       filterMethod: Function,//数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。
-      filteredValue: Array//选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性。
+      filteredValue: Array,//选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性。
+      isEdit:{ type: Boolean, default: false },
     }
   }
   
