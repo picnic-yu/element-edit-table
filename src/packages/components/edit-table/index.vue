@@ -75,7 +75,7 @@ export default {
         window.addEventListener("keydown", this.throttleHandleKey);
     }, 
     destroyed(){
-        window.removeEventListener('keydown');
+        // window.removeEventListener('keydown');
     },
     methods:{
         handleKey(e) {
@@ -151,6 +151,8 @@ export default {
         handleRowClick(row, event, column){
             this.isClickRow = true;
             this.clickRowItem = row;
+            console.log(row, event, column)
+            // this.clickIndex = 
             this.$emit('row-click',row, event, column);
         },
         // row-contextmenu	当某一行被鼠标右键点击时会触发该事件	row, event
@@ -201,6 +203,7 @@ export default {
             this.setCurrentRow()
         },
         up() {
+            this.$emit('keywordDown',this.activeIndex,this.data[this.activeIndex]);
             this.activeIndex > 0
                 ? this.activeIndex--
                 : (this.activeIndex = this.len)

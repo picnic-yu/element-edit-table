@@ -31,7 +31,8 @@
         <template v-slot="scope" v-if='type !=="index" && type!=="selection"' >
             <div v-if='scope.row.isEdit && type !=="index" && type!=="selection"'>
               
-                <el-input   v-model='scope.row[scope.column.property]' />
+                <!-- <el-input   v-model='scope.row[scope.column.property]' /> -->
+                <v-input :data='scope'></v-input>
                 <slot v-bind='getScope(scope)'></slot>
             </div>
             <div v-else>
@@ -43,12 +44,16 @@
 </template>
 <script>
 import PropsStatic from './props'
+import VInput from './input'
 export default {
     name:'v-table-column',
     data(){
         return {
             test:''
         }
+    },
+    components:{
+        VInput
     },
     props: {
         ...PropsStatic.tableColumn
@@ -58,7 +63,7 @@ export default {
             console.log(scope)
         },
         getScope (scope) {
-            console.log(scope)
+            // console.log(scope)
             return {
                 row: scope.row,
                 column: scope.column,

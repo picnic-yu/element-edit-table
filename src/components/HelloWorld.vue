@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-table-extends :data="tableData3" table-ref='multipleTable1' @keywordDown='keywordDown' @handleDeleteRow='handleDeleteRow' @handleEditRow='handleEditRow' @handleCreate='handleCreate'   ref="multipleTable" highlight-current-row>
+  <!-- <v-table-extends :data="tableData3" table-ref='multipleTable1' @keywordDown='keywordDown' @handleDeleteRow='handleDeleteRow' @handleEditRow='handleEditRow' @handleCreate='handleCreate'   ref="multipleTable" highlight-current-row>
 		<v-table-column type="selection" width="55" ></v-table-column>
 		<v-table-column type="index" label="序号" width="60"></v-table-column>
 		<v-table-column prop="sex" label="性别" width="100" :formatter="formatSex"></v-table-column>
@@ -8,7 +8,7 @@
 		<v-table-column prop="name" label="姓名"></v-table-column>
 		<v-table-column prop="IsAudit" :isEdit= 'checkoutStatue'  :formatter="formatterColumn" label="审核状态" ></v-table-column>
 		<v-table-column prop="address" label="地址"></v-table-column>
-	</v-table-extends>
+	</v-table-extends> -->
   <!-- <v-table-extends :data="tableData3" table-ref='multipleTable2' ref="multipleTable" highlight-current-row>
 		<v-table-column type="selection" width="55" ></v-table-column>
 		<v-table-column type="index" label="序号" width="60"></v-table-column>
@@ -18,12 +18,17 @@
 		 <v-table-column prop="IsAudit"  :formatter="formatterColumn" label="审核状态" ></v-table-column>
 		<v-table-column prop="address" label="地址"></v-table-column>
 	</v-table-extends> -->
-  <el-input v-model="input" placeholder="请输入内容"></el-input>
+  <!-- <el-input v-model="input" placeholder="请输入内容"></el-input> -->
+  <v-table></v-table>
 </div>
 	
 </template>
 <script>
-export default {   
+import VTable from './v-table';
+export default { 
+  components:{
+    VTable
+  },  
 	data() {
 		return {
       checkoutStatue:true,
