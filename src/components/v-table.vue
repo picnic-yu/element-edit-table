@@ -93,7 +93,9 @@ export default {
         },
         handleEditRow(row){
             console.log(row,'row')
-            console.log(this.tableData3)
+            // console.log(this.tableData3)
+            this.pwdChange(row,row.index)
+            // this.pwdChange(row,index,true)
         },
         handleDeleteRow(row){
             console.log(row)
@@ -118,12 +120,12 @@ export default {
                     return false;
                 }
             }
-            console.log(row)
-            //是否是取消操作
-            if (!cg) {
-                if (!this.master_user.sel.id) this.master_user.data.splice(index, 1);
-                return row.isSet = !row.isSet;
-            }
+            // console.log(row)
+            // //是否是取消操作
+            // if (!cg) {
+            //     if (!this.master_user.sel.id) this.master_user.data.splice(index, 1);
+            //     return row.isSet = !row.isSet;
+            // }
             //提交数据
             if (row.isSet) {
                 let self = this;
@@ -141,7 +143,7 @@ export default {
                 })();
             } else {
                 this.master_user.sel = JSON.parse(JSON.stringify(row));
-                row.isSet = true;
+                // row.isSet = true;
             }
         }
     }
