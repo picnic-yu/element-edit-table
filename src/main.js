@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+import ElementUI from 'element-ui'
 Vue.config.productionTip = false
 
-import { Table,TableColumn,Input} from 'element-ui'
 import xtui from './packages/index.js';
+// import 'element-ui/lib/theme-chalk/index.css'
 console.log(xtui)
   Vue.use(xtui);
-Vue.use(Table)
-Vue.use(Input)
-Vue.use(TableColumn)
+
+Vue.use(ElementUI)
 new Vue({
   render: h => h(App)
 }).$mount('#app')

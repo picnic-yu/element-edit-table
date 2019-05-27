@@ -1,41 +1,48 @@
 <template>
     <div>
-        <v-table-extends  
-        :data="master_user.data" 
-        border style="width: 100%" 
-        table-ref='multipleTable1' 
-        @keywordDown='keywordDown' 
-        @handleDeleteRow='handleDeleteRow' 
-        @handleEditRow='handleEditRow' 
-        @handleCreate='handleCreate'   
-        ref="multipleTable" 
-        @row-click="handleCurrentChange" 
-        highlight-current-row>
-            <el-table-column type="index"></el-table-column>
-            <el-table-column v-for="(v,i) in master_user.columns" :key='v.field' :prop="v.field" :label="v.title" :width="v.width">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.isSet">
-                        <el-input  placeholder="请输入内容" v-model="master_user.sel[v.field]">
-                        </el-input>
-                    </span>
-                    <span v-else>{{scope.row[v.field]}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="100">
-                <template slot-scope="scope">
-                    <span class="el-tag el-tag--info el-tag--mini" style="cursor: pointer;" @click="pwdChange(scope.row,scope.$index,true)">
-                        {{scope.row.isSet?'保存':"修改"}}
-                    </span>
-                    <span v-if="!scope.row.isSet" class="el-tag el-tag--danger el-tag--mini" style="cursor: pointer;">
-                        删除
-                    </span>
-                    <span v-else class="el-tag  el-tag--mini" style="cursor: pointer;" @click="pwdChange(scope.row,scope.$index,false)">
-                        取消
-                    </span>
-                </template>
-            </el-table-column>
-        </v-table-extends>
+        <el-form label-position="right" status-icon :rules="rules" :model="master_user.sel" ref="ruleForm">
+            
+        
+            <v-table-extends  
+            :data="master_user.data" 
+            border style="width: 100%" 
+            table-ref='multipleTable1' 
+            @keywordDown='keywordDown' 
+            @handleDeleteRow='handleDeleteRow' 
+            @handleEditRow='handleEditRow' 
+            @handleCreate='handleCreate'   
+            ref="multipleTable" 
+            @row-click="handleCurrentChange" 
+            highlight-current-row>
+                <el-table-column type="index"></el-table-column>
+                <el-table-column v-for="(v,i) in master_user.columns" :key='i' :prop="v.field" :label="v.title" :width="v.width">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.isSet">
+                            <el-form-item :prop='v.field' >
+                                <el-input  v-model="master_user.sel[v.field]" :maxlength=50></el-input>
+                            </el-form-item>
 
+                            <!-- <el-input  placeholder="请输入内容" v-model="master_user.sel[v.field]">
+                            </el-input> -->
+                        </span>
+                        <span v-else>{{scope.row[v.field]}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="100">
+                    <template slot-scope="scope">
+                        <span class="el-tag el-tag--info el-tag--mini" style="cursor: pointer;" @click="pwdChange(scope.row,scope.$index,true)">
+                            {{scope.row.isSet?'保存':"修改"}}
+                        </span>
+                        <span v-if="!scope.row.isSet" class="el-tag el-tag--danger el-tag--mini" style="cursor: pointer;">
+                            删除
+                        </span>
+                        <span v-else class="el-tag  el-tag--mini" style="cursor: pointer;" @click="pwdChange(scope.row,scope.$index,false)">
+                            取消
+                        </span>
+                    </template>
+                </el-table-column>
+            </v-table-extends>
+        </el-form>
         <div class="el-table-add-row" style="width: 99.2%;" @click="addMasterUser()"><span>+ 添加</span></div>
     </div>
 </template>
@@ -63,6 +70,15 @@ export default {
                 ],
                 data: [],
             },
+            rules: {
+                user: [
+                    { required: true, message: '证据模板名称不能为空', trigger: 'blur' }
+                ]
+            },
+            ruleForm:{
+
+            }
+
         }
     },
     mounted(){
@@ -85,6 +101,7 @@ export default {
         },
         keywordDown(index,row){
             console.log(index,row)
+            if(!row.isSet) return;
             this.pwdChange(row,index,true)
         },
         handleCreate(){
@@ -129,18 +146,24 @@ export default {
             //提交数据
             if (row.isSet) {
                 let self = this;
-                //项目是模拟请求操作  自己修改下
-                (function () {
-                    let data = JSON.parse(JSON.stringify(self.master_user.sel));
-                    for (let k in data) row[k] = data[k];
-                    // app.$message({
-                    //     type: 'success',
-                    //     message: "保存成功!"
-                    // });
-                    //然后这边重新读取表格数据
-                    self.readMasterUser();
-                    row.isSet = false;
-                })();
+                this.$refs['ruleForm'].validate(valid => {
+                    if (valid) {
+                        //根据状态dialogStatus判断是新增还是更新
+                        let data = JSON.parse(JSON.stringify(self.master_user.sel));
+                        for (let k in data) row[k] = data[k];
+                        // app.$message({
+                        //     type: 'success',
+                        //     message: "保存成功!"
+                        // });
+                        //然后这边重新读取表格数据
+                        self.readMasterUser();
+                        row.isSet = false;
+                    } else {
+                            alert(222)
+                            return false;
+                    }
+                });
+
             } else {
                 this.master_user.sel = JSON.parse(JSON.stringify(row));
                 // row.isSet = true;
