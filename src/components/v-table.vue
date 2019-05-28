@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-form label-position="right" status-icon :rules="rules" :model="master_user.sel" ref="ruleForm">
+        <el-form label-position="right" status-icon :rules="rules" :model="editTableOption.sel" ref="ruleForm">
             
         
             <v-table-extends  
-            :data="master_user.data" 
+            :data="editTableOption.data" 
             border style="width: 100%" 
             table-ref='multipleTable1' 
             @keywordDown='keywordDown' 
@@ -12,46 +12,29 @@
             @handleEditRow='handleEditRow' 
             @handleCreate='handleCreate'   
             ref="multipleTable" 
+            :insertIndex='insertIndex'
             @row-click="handleCurrentChange" 
             highlight-current-row>
                 <el-table-column type="index"></el-table-column>
-                <el-table-column v-for="(v,i) in master_user.columns" :key='i' :prop="v.field" :label="v.title" :width="v.width">
+                <el-table-column v-for="(v,i) in editTableOption.columns" :key='i' :prop="v.field" :label="v.title" :width="v.width">
                     <template slot-scope="scope">
                         <span v-if="scope.row.isSet">
                             <el-form-item :prop='v.field' >
-                                <el-input  v-model="master_user.sel[v.field]" :maxlength=50></el-input>
+                                <el-input  v-model="editTableOption.sel[v.field]" :maxlength=50></el-input>
                             </el-form-item>
 
-                            <!-- <el-input  placeholder="请输入内容" v-model="master_user.sel[v.field]">
+                            <!-- <el-input  placeholder="请输入内容" v-model="editTableOption.sel[v.field]">
                             </el-input> -->
                         </span>
                         <span v-else>{{scope.row[v.field]}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="100">
-                    <template slot-scope="scope">
-                        <span class="el-tag el-tag--info el-tag--mini" style="cursor: pointer;" @click="pwdChange(scope.row,scope.$index,true)">
-                            {{scope.row.isSet?'保存':"修改"}}
-                        </span>
-                        <span v-if="!scope.row.isSet" class="el-tag el-tag--danger el-tag--mini" style="cursor: pointer;">
-                            删除
-                        </span>
-                        <span v-else class="el-tag  el-tag--mini" style="cursor: pointer;" @click="pwdChange(scope.row,scope.$index,false)">
-                            取消
-                        </span>
-                    </template>
-                </el-table-column>
             </v-table-extends>
         </el-form>
-        <div class="el-table-add-row" style="width: 99.2%;" @click="addMasterUser()"><span>+ 添加</span></div>
     </div>
 </template>
 <script>
-//id生成工具 这个不用看 示例而已 模拟后台返回的id
-        var generateId = {
-            _count: 1,
-            get(){return ((+new Date()) + "_" + (this._count++))}
-        };
+
 export default {
     props:{
         columns:Array,
@@ -59,7 +42,7 @@ export default {
     },
     data(){
         return{
-            master_user: {
+            editTableOption: {
                 sel: null,//选中行   
                 columns: [
                     { field: "type", title: "远程类型", width: 120 },
@@ -77,21 +60,25 @@ export default {
             },
             ruleForm:{
 
-            }
+            },
+            insertIndex:null
 
         }
     },
     mounted(){
-        this.master_user.data.forEach((item, index) => {
+        this.editTableOption.data = [...this.data];
+        this.editTableOption.columns = [...this.columns];
+        this.editTableOption.data.forEach((item, index) => {
             item.index = index;
         });
+        
     },
     methods: {
         //读取表格数据
         readMasterUser() {
             //根据实际情况，自己改下啊 
-            this.master_user.data.map(i => {
-                i.id = generateId.get();//模拟后台插入成功后有了id
+            this.editTableOption.data.map(i => {
+                // i.id = generateId.get();//模拟后台插入成功后有了id
                 i.isSet=false;//给后台返回数据添加`isSet`标识
                 return i;
             });
@@ -100,17 +87,17 @@ export default {
             console.log(row,event,column)
         },
         keywordDown(index,row){
-            console.log(index,row)
             if(!row.isSet) return;
             this.pwdChange(row,index,true)
         },
         handleCreate(){
-            console.log(22222222)
             this.addMasterUser();
         },
         handleEditRow(row){
-            console.log(row,'row')
+            
             // console.log(this.tableData3)
+            // this.editTableOption.data[row.index].isSet = true;
+            console.log(row,'row')
             this.pwdChange(row,row.index)
             // this.pwdChange(row,index,true)
         },
@@ -119,19 +106,25 @@ export default {
         },
         //添加账号
         addMasterUser() {
-            for (let i of this.master_user.data) {
+            for (let i of this.editTableOption.data) {
                 if (i.isSet) return alert("请先保存当前编辑项");
             }
-            let index = this.master_user.data.length + 1;
-            let j = { id: 0, "type": "", "addport": "", "user": "", "pwd": "", "info": "", "isSet": true, "_temporary": true,index };
-            this.master_user.data.push(j);
+            let index = this.editTableOption.data.length;
+            this.insertIndex = index;
+            let j = {}
+            this.columns.forEach((item) => {
+                j[item.field] = '';
+                j['isSet'] = true;
+            });
+            // let j = {  "type": "", "addport": "", "user": "", "pwd": "", "info": "", "isSet": true, "_temporary": true,index };
+            this.editTableOption.data.push(j);
             
-            this.master_user.sel = JSON.parse(JSON.stringify(j));
+            this.editTableOption.sel = JSON.parse(JSON.stringify(j));
         },
         //修改
         pwdChange(row, index, cg) {
             //点击修改 判断是否已经保存所有操作
-            for (let i of this.master_user.data) {
+            for (let i of this.editTableOption.data) {
                 if (i.isSet && i.id != row.id) {
                     // this.$message.warning("请先保存当前编辑项");
                     return false;
@@ -140,7 +133,7 @@ export default {
             // console.log(row)
             // //是否是取消操作
             // if (!cg) {
-            //     if (!this.master_user.sel.id) this.master_user.data.splice(index, 1);
+            //     if (!this.editTableOption.sel.id) this.editTableOption.data.splice(index, 1);
             //     return row.isSet = !row.isSet;
             // }
             //提交数据
@@ -149,7 +142,7 @@ export default {
                 this.$refs['ruleForm'].validate(valid => {
                     if (valid) {
                         //根据状态dialogStatus判断是新增还是更新
-                        let data = JSON.parse(JSON.stringify(self.master_user.sel));
+                        let data = JSON.parse(JSON.stringify(self.editTableOption.sel));
                         for (let k in data) row[k] = data[k];
                         // app.$message({
                         //     type: 'success',
@@ -165,7 +158,7 @@ export default {
                 });
 
             } else {
-                this.master_user.sel = JSON.parse(JSON.stringify(row));
+                this.editTableOption.sel = JSON.parse(JSON.stringify(row));
                 // row.isSet = true;
             }
         }

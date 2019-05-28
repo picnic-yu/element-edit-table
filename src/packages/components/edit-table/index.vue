@@ -54,7 +54,16 @@ import PropsStatic from './props'
 export default {
     name:"v-table-extends",
     props: {
-        ...PropsStatic.table
+        ...PropsStatic.table,
+        insertIndex:Number
+    },
+    watch:{
+        insertIndex(val){
+            this.activeIndex = val;
+            console.log(val,'valllllllllllllllll')
+            console.log(this.data)
+            this.setCurrentRow();
+        }
     },
     data(){
         return {
@@ -116,6 +125,8 @@ export default {
             }
         },
         setCurrentRow () {
+            this.isClickRow = true;
+            this.clickRowItem = this.data[this.activeIndex];
             this.$refs[this.tableRef].setCurrentRow(this.data[this.activeIndex])
         },
         // select-all 当用户手动勾选全选 Checkbox 时触发的事件
@@ -196,6 +207,7 @@ export default {
         },
         down() {
             this.$emit('keywordDown',this.activeIndex,this.data[this.activeIndex]);
+            if(this.data[this.activeIndex].isSet) return;
             this.activeIndex < this.len
                 ? this.activeIndex++
                 : (this.activeIndex = 0)

@@ -19,7 +19,7 @@
 		<v-table-column prop="address" label="地址"></v-table-column>
 	</v-table-extends> -->
   <!-- <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-  <v-table></v-table>
+  <v-table :columns='columns' :data='data'></v-table>
 </div>
 	
 </template>
@@ -57,7 +57,15 @@ export default {
         address: '上海市普陀区金沙江路 1518 弄',
         IsAudit:10,
         sex:'-1'
-      }]
+      }],
+      columns:[
+        { field: "type", title: "远程类型", width: 120 },
+        { field: "addport", title: "连接地址", width: 150 },
+        { field: "user", title: "登录用户", width: 120 },
+        { field: "pwd", title: "登录密码", width: 220 },
+        { field: "info", title: "其他信息" }
+      ],
+      data:[]
     }
 	},
 	mounted() {
