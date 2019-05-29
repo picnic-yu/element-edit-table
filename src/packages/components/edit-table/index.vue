@@ -63,6 +63,9 @@ export default {
             console.log(val,'valllllllllllllllll')
             console.log(this.data)
             this.setCurrentRow();
+        },
+        data(val){
+            console.log(val,'datadata')
         }
     },
     data(){
@@ -81,6 +84,7 @@ export default {
         }
     },
     mounted() {
+        console.log(this.data,'datadata')
         window.addEventListener("keydown", this.throttleHandleKey);
     }, 
     destroyed(){

@@ -78,6 +78,15 @@ export default {
 
         }
     },
+    watch:{
+        
+        data(val){
+            this.editTableOption.data = [...val];
+            this.editTableOption.data.forEach((item, index) => {
+                item.index = index;
+            });
+        }
+    },
     mounted(){
         this.editTableOption.data = [...this.data];
         this.editTableOption.columns = [...this.columns];
@@ -92,6 +101,7 @@ export default {
             console.log(row,event,column)
         },
         keywordDown(index,row){
+            console.log(index)
             if(!row.isSet) return;
             this.pwdChange(row,index)
         },
@@ -101,10 +111,14 @@ export default {
         handleEditRow(row){
             
             // console.log(this.tableData3)
+            this.editTableOption.data.forEach((item)=>{
+                item.isSet = false;
+            });
             this.editTableOption.data[row.index].isSet = true;
             
             console.log(row,'row')
-            this.pwdChange(row,row.index,true)
+            console.log(this.editTableOption.data,'this.editTableOption.data')
+            // this.pwdChange(row,row.index,true)
         },
         handleDeleteRow(row){
             console.log(row)
@@ -132,13 +146,13 @@ export default {
         //修改
         pwdChange(row, index, cg) {
             //点击修改 判断是否已经保存所有操作
-            for (let i of this.editTableOption.data) {
-                if (i.isSet && i.id != row.id) {
-                    console.log(2222222222222222)
-                    // this.$message.warning("请先保存当前编辑项");
-                    return false;
-                }
-            }
+            // for (let i of this.editTableOption.data) {
+            //     if (i.isSet && i.id != row.id) {
+            //         console.log(2222222222222222)
+            //         // this.$message.warning("请先保存当前编辑项");
+            //         return false;
+            //     }
+            // }
             // 编辑
             if (cg) return row.isSet = true;
             //提交数据
@@ -148,13 +162,22 @@ export default {
                     if (valid) {
                         //根据状态dialogStatus判断是新增还是更新
                         let data = JSON.parse(JSON.stringify(this.editTableOption.sel));
-                        for (let k in data) row[k] = data[k];
+                        this.insertIndex = row.index;
+                        this.$emit('handleSubmit',row,this.editTableOption.sel);
                         // app.$message({
                         //     type: 'success',
                         //     message: "保存成功!"
                         // });
                         //然后这边重新读取表格数据
                         row.isSet = false;
+                        // if(!this.editTableOption.sel.id ){
+                        //     this.editTableOption.sel.id=1
+                        //     this.editTableOption.data.push(this.editTableOption.sel)
+                        //     row.isSet = false;
+                        // }else{
+                        //     for (let k in data) row[k] = data[k];
+                        //     row.isSet = false;
+                        // }
                     } else {
                             alert(222)
                             return false;
