@@ -67,9 +67,7 @@ export default {
                 data: [],
             },
             rules: {
-                user: [
-                    { required: true, message: '证据模板名称不能为空', trigger: 'blur' }
-                ]
+                
             },
             ruleForm:{
 
@@ -93,39 +91,32 @@ export default {
         this.editTableOption.data.forEach((item, index) => {
             item.index = index;
         });
-        
+        this.rules = this.formRules;
     },
     methods: {
     
         handleCurrentChange(row, event, column){
-            console.log(row,event,column)
+            // console.log(row,event,column)
         },
         keywordDown(index,row){
-            console.log(index)
             if(!row.isSet) return;
             this.pwdChange(row,index)
         },
         handleCreate(){
-            this.addMasterUser();
+            this.handlePushItem();
         },
         handleEditRow(row){
-            
-            // console.log(this.tableData3)
             this.editTableOption.data.forEach((item)=>{
                 item.isSet = false;
             });
             this.editTableOption.data[row.index].isSet = true;
-            
-            console.log(row,'row')
-            console.log(this.editTableOption.data,'this.editTableOption.data')
-            // this.pwdChange(row,row.index,true)
         },
         handleDeleteRow(row){
-            console.log(row)
+            this.editTableOption.data.splice(row.index,1);
             this.$emit('handleDelete',row);
         },
-        //添加账号
-        addMasterUser() {
+        //新增
+        handlePushItem() {
             for (let i of this.editTableOption.data) {
                 if (i.isSet) return alert("请先保存当前编辑项");
             }
@@ -137,11 +128,8 @@ export default {
                 j['isSet'] = true;
                 j['index'] = index;
             });
-            
             this.editTableOption.data.push(j);
-            
             this.editTableOption.sel = JSON.parse(JSON.stringify(j));
-            console.log(this.editTableOption,'this.editTableOption')
         },
         //修改
         pwdChange(row, index, cg) {
@@ -179,7 +167,7 @@ export default {
                         //     row.isSet = false;
                         // }
                     } else {
-                            alert(222)
+                            // alert(222)
                             return false;
                     }
                 });

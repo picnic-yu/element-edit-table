@@ -39,7 +39,7 @@ export default {
         user:[
           { required: true, message: '登录用户不能为空', trigger: 'blur' }
         ]
-      }
+      },
     }
 	},
 	mounted() {
@@ -58,7 +58,6 @@ export default {
       }else{
         this.data[row.index] = selRow
       }
-      
     }
   }
 }
