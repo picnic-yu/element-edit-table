@@ -87,13 +87,17 @@ export default {
         this.rules = this.formRules;
     },
     methods: {
-    
+        // 点击一行
         handleCurrentChange(row, event, column){
-            // console.log(row,event,column)
+            console.log(row,event,column);
+            console.log(this.editTableOption);
+            console.log(this.insertIndex);
+            this.pwdChange(this.editTableOption.data[this.insertIndex],this.insertIndex);
         },
         keywordDown(index,row){
             if(!row.isSet) return;
-            this.pwdChange(row,index)
+            this.pwdChange(row,index);
+
         },
         handleCreate(){
             this.handlePushItem();
