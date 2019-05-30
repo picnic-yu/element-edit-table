@@ -55,7 +55,7 @@ export default {
         columns:Array,
         data:Array,
         formRules:Object,
-
+        actionIndex:Number
     },
     data(){
         return{
@@ -83,7 +83,7 @@ export default {
             this.editTableOption.data.forEach((item, index) => {
                 item.index = index;
             });
-        }
+        },
     },
     mounted(){
         this.editTableOption.data = [...this.data];
@@ -109,10 +109,14 @@ export default {
             this.editTableOption.data.forEach((item)=>{
                 item.isSet = false;
             });
+            this.editTableOption.sel = row;
             this.editTableOption.data[row.index].isSet = true;
+            console.log('row',row);
+            console.log('this.editTableOption.data[row.index]',this.editTableOption.data[row.index]);
+
         },
         handleDeleteRow(row){
-            this.editTableOption.data.splice(row.index,1);
+            
             this.$emit('handleDelete',row);
         },
         //新增

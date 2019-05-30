@@ -60,12 +60,10 @@ export default {
     watch:{
         insertIndex(val){
             this.activeIndex = val;
-            console.log(val,'valllllllllllllllll')
-            console.log(this.data)
             this.setCurrentRow();
         },
         data(val){
-            console.log(val,'datadata')
+
         }
     },
     data(){
@@ -84,7 +82,6 @@ export default {
         }
     },
     mounted() {
-        console.log(this.data,'datadata')
         window.addEventListener("keydown", this.throttleHandleKey);
     }, 
     destroyed(){
@@ -166,7 +163,6 @@ export default {
         handleRowClick(row, event, column){
             this.isClickRow = true;
             this.clickRowItem = row;
-            console.log(row, event, column)
             // this.clickIndex = 
             this.$emit('row-click',row, event, column);
         },

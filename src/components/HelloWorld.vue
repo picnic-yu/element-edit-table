@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-table @handleSubmit='handleSubmit' :formRules='formRules' :columns='columns' :data='data' @handleDelete='handleDelete'></v-table>
+  <v-table @handleSubmit='handleSubmit'  :formRules='formRules' :columns='columns' :data='data' @handleDelete='handleDelete'></v-table>
 </div>
 	
 </template>
@@ -47,6 +47,7 @@ export default {
 	methods: {
     handleDelete(row){
       console.log(row);
+      this.data.splice(row.index,1);
       console.log(this.data)
     },
 		handleSubmit(row,selRow){
