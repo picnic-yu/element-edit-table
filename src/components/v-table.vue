@@ -53,7 +53,6 @@
 export default {
     props:{
         columns:Array,
-        data:Array,
         formRules:Object,
         actionIndex:Number
     },
@@ -78,15 +77,9 @@ export default {
     },
     watch:{
         
-        data(val){
-            this.editTableOption.data = [...val];
-            this.editTableOption.data.forEach((item, index) => {
-                item.index = index;
-            });
-        },
+        
     },
     mounted(){
-        this.editTableOption.data = [...this.data];
         this.editTableOption.columns = [...this.columns];
         this.editTableOption.data.forEach((item, index) => {
             item.index = index;
@@ -111,13 +104,9 @@ export default {
             });
             this.editTableOption.sel = row;
             this.editTableOption.data[row.index].isSet = true;
-            console.log('row',row);
-            console.log('this.editTableOption.data[row.index]',this.editTableOption.data[row.index]);
-
         },
         handleDeleteRow(row){
-            
-            this.$emit('handleDelete',row);
+            this.editTableOption.data.splice(row.index,1);
         },
         //新增
         handlePushItem() {
@@ -155,21 +144,14 @@ export default {
                         //根据状态dialogStatus判断是新增还是更新
                         let data = JSON.parse(JSON.stringify(this.editTableOption.sel));
                         this.insertIndex = row.index;
-                        this.$emit('handleSubmit',row,this.editTableOption.sel);
                         // app.$message({
                         //     type: 'success',
                         //     message: "保存成功!"
                         // });
                         //然后这边重新读取表格数据
+                   
+                        for (let k in data) row[k] = data[k];
                         row.isSet = false;
-                        // if(!this.editTableOption.sel.id ){
-                        //     this.editTableOption.sel.id=1
-                        //     this.editTableOption.data.push(this.editTableOption.sel)
-                        //     row.isSet = false;
-                        // }else{
-                        //     for (let k in data) row[k] = data[k];
-                        //     row.isSet = false;
-                        // }
                     } else {
                             // alert(222)
                             return false;

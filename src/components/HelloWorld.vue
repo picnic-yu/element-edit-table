@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-table @handleSubmit='handleSubmit'  :formRules='formRules' :columns='columns' :data='data' @handleDelete='handleDelete'></v-table>
+  <v-table  :formRules='formRules' :columns='columns'></v-table>
 </div>
 	
 </template>
@@ -45,21 +45,7 @@ export default {
 	mounted() {
 	},
 	methods: {
-    handleDelete(row){
-      console.log(row);
-      this.data.splice(row.index,1);
-      console.log(this.data)
-    },
-		handleSubmit(row,selRow){
-      console.log(row,selRow)
-      selRow.isSet = false;
-      if(!selRow.id){
-        selRow.id=1
-        this.data.push(selRow)
-      }else{
-        this.data[row.index] = selRow
-      }
-    }
+    
   }
 }
 </script>
