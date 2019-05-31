@@ -6,9 +6,11 @@
             border style="width: 100%" 
             table-ref='multipleTable1' 
             @keywordDown='keywordDown' 
-            @handleDeleteRow='handleDeleteRow' 
+            @handleDeleteRow='handleDeleteRow'
+            @handleEnter='handleEnter' 
             @handleEditRow='handleEditRow' 
-            @handleCreate='handleCreate'   
+            @handleCreate='handleCreate'
+            @row-dblclick='rowDblclick'   
             ref="multipleTable" 
             :insertIndex='insertIndex'
             @row-click="handleCurrentChange" 
@@ -89,9 +91,7 @@ export default {
     methods: {
         // 点击一行
         handleCurrentChange(row, event, column){
-            console.log(row,event,column);
-            console.log(this.editTableOption);
-            console.log(this.insertIndex);
+            if(row.isSet) return;
             this.pwdChange(this.editTableOption.data[this.insertIndex],this.insertIndex);
         },
         keywordDown(index,row){
@@ -100,26 +100,44 @@ export default {
 
         },
         handleCreate(){
+            if(this.editTableOption.data){
+                for (let i of this.editTableOption.data) {
+                    if (i.isSet) return;
+                }
+            }
             this.handlePushItem();
         },
+        rowDblclick(row, event){
+            this.handleEditRow(row);
+        },
         handleEditRow(row){
+            for (let i of this.editTableOption.data) {
+                if (i.isSet) return;
+            }
             this.editTableOption.data.forEach((item)=>{
                 item.isSet = false;
             });
             this.editTableOption.sel = row;
             this.editTableOption.data[row.index].isSet = true;
         },
+        // 回车
+        handleEnter(row){
+            for (let i of this.editTableOption.data) {
+                if (i.isSet) return;
+            }
+            alert('您按了回车')
+        },
         handleDeleteRow(row){
+            for (let i of this.editTableOption.data) {
+                if (i.isSet) return;
+            }
             this.editTableOption.data.splice(row.index,1);
         },
         //新增
         handlePushItem() {
-            for (let i of this.editTableOption.data) {
-                if (i.isSet) return alert("请先保存当前编辑项");
-            }
             let index = this.editTableOption.data.length;
             this.insertIndex = index;
-            let j = {}
+            let j = {};
             this.columns.forEach((item) => {
                 j[item.field] = '';
                 j['isSet'] = true;
@@ -127,18 +145,13 @@ export default {
             });
             this.editTableOption.data.push(j);
             this.editTableOption.sel = JSON.parse(JSON.stringify(j));
+            setTimeout(()=>{
+                var inputs= document.getElementsByClassName("el-form-item__content");
+                inputs[0].querySelector('input').focus();
+            },1)
         },
         //修改
         pwdChange(row, index, cg) {
-            //点击修改 判断是否已经保存所有操作
-            // for (let i of this.editTableOption.data) {
-            //     if (i.isSet && i.id != row.id) {
-            //         console.log(2222222222222222)
-            //         // this.$message.warning("请先保存当前编辑项");
-            //         return false;
-            //     }
-            // }
-            // 编辑
             if (cg) return row.isSet = true;
             //提交数据
             if (row.isSet) {
@@ -148,16 +161,14 @@ export default {
                         //根据状态dialogStatus判断是新增还是更新
                         let data = JSON.parse(JSON.stringify(this.editTableOption.sel));
                         this.insertIndex = row.index;
-                        // app.$message({
-                        //     type: 'success',
-                        //     message: "保存成功!"
-                        // });
-                        //然后这边重新读取表格数据
                    
                         for (let k in data) row[k] = data[k];
                         row.isSet = false;
                     } else {
-                            // alert(222)
+                            setTimeout(()=>{
+                                var isError= document.getElementsByClassName("is-error");
+                                isError[0].querySelector('input').focus();
+                            },1)
                             return false;
                     }
                 });

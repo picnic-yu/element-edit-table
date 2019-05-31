@@ -38,6 +38,9 @@ export default {
       formRules:{
         user:[
           { required: true, message: '登录用户不能为空', trigger: 'blur' }
+        ],
+        addport:[
+          { required: true, message: '连接地址不能为空', trigger: 'blur' }
         ]
       },
     }

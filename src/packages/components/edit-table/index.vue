@@ -70,7 +70,8 @@ export default {
         return {
             activeIndex:0,
             clickRowItem:{},
-            isClickRow:false
+            isClickRow:false,
+            isActive:false
         }
     },
     computed: {
@@ -83,14 +84,25 @@ export default {
     },
     mounted() {
         window.addEventListener("keydown", this.throttleHandleKey);
+        // 获取需要绑定的table
+        this.dom = this.$refs.multipleTable1.bodyWrapper;
+        this.dom.addEventListener('mouseenter', () => {
+            this.isActive = true;
+        });
+        this.dom.addEventListener('mouseleave', () => {
+            this.isActive = false;
+        });
     }, 
     destroyed(){
         // window.removeEventListener('keydown');
     },
     methods:{
         handleKey(e) {
+            if (!this.isActive) return ;
             e.keyCode === 40 && this.down();
             e.keyCode === 38 && this.up();
+            // enter 13
+            e.keyCode === 13 && this.handleEnter();
             // Q 81
             // i  新增 73
             e.keyCode === 73 && this.handleCreate();
@@ -101,13 +113,21 @@ export default {
         },
         // 快捷键新增事件  
         handleCreate(){
+            console.log(this.data,'this.data')
             this.$emit('handleCreate')
         },
         // 快捷键编辑
         handleEditRow(){
             let row = this.clickRowItem;
+            console.log(this.data,'this.data')
             if(this.isClickRow){
                 this.$emit('handleEditRow',row)
+            }
+        },
+        handleEnter(){
+            let row = this.clickRowItem;
+            if(this.isClickRow){
+                this.$emit('handleEnter',row)
             }
         },
         handleDeleteRow(){
